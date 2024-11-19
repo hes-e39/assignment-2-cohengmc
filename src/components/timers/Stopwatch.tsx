@@ -4,7 +4,11 @@ import HomeBtnsWithBack from '../generic/HomeBtnsWithBack';
 import NumberpadInput from '../generic/NumberpadInput';
 import TimerDisplay from '../generic/TimerDisplay';
 
-const Stopwatch = () => {
+interface TimerProps {
+    timerID: string;
+}
+
+const Stopwatch = ({ timerID }: TimerProps) => {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [isDone, setIsDone] = useState(false);

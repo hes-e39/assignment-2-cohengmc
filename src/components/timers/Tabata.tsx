@@ -4,7 +4,11 @@ import HomeBtnsWithBack from '../generic/HomeBtnsWithBack';
 import NumberpadInput from '../generic/NumberpadInput';
 import TimerDisplay from '../generic/TimerDisplay';
 
-const Tabata = () => {
+interface TimerProps {
+    timerID: string;
+}
+
+const Tabata = ({ timerID }: TimerProps) => {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [isWorking, setIsWorking] = useState(false);
@@ -125,14 +129,14 @@ const Tabata = () => {
                 ''
             ) : (
                 <div className="button-group">
-                    <input type="radio" id="roundsT" name="tabata" value="Rounds" onChange={radioChange} />
-                    <label htmlFor="roundsT">Rounds</label>
+                    <input type="radio" id={`roundsTabata${timerID}`} name={`Tabata${timerID}`} value="Rounds" onChange={radioChange} />
+                    <label htmlFor={`roundsTabata${timerID}`}>Rounds</label>
 
-                    <input type="radio" id="workT" name="tabata" value="Work" onChange={radioChange} />
-                    <label htmlFor="workT">Work</label>
+                    <input type="radio" id={`workTabata${timerID}`} name={`Tabata${timerID}`} value="Work" onChange={radioChange} />
+                    <label htmlFor={`workTabata${timerID}`}>Work</label>
 
-                    <input type="radio" id="restT" name="tabata" value="Rest" onChange={radioChange} />
-                    <label htmlFor="restT">Rest</label>
+                    <input type="radio" id={`restTabata${timerID}`} name={`Tabata${timerID}`} value="Rest" onChange={radioChange} />
+                    <label htmlFor={`restTabata${timerID}`}>Rest</label>
                 </div>
             )}
 

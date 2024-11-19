@@ -4,7 +4,11 @@ import HomeBtnsWithBack from '../generic/HomeBtnsWithBack';
 import NumberpadInput from '../generic/NumberpadInput';
 import TimerDisplay from '../generic/TimerDisplay';
 
-const XY = () => {
+interface TimerProps {
+    timerID: string;
+}
+
+const XY = ({ timerID }: TimerProps) => {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [isInputSet, setIsInputSet] = useState(false);
@@ -104,11 +108,11 @@ const XY = () => {
                 ''
             ) : (
                 <div className="button-group">
-                    <input type="radio" id="rounds" name="XY" value="Rounds" onChange={radioChange} />
-                    <label htmlFor="rounds">Rounds</label>
+                    <input type="radio" id={`roundsXY${timerID}`} name={`XY${timerID}`} value="Rounds" onChange={radioChange} />
+                    <label htmlFor={`roundsXY${timerID}`}>Rounds</label>
 
-                    <input type="radio" id="time" name="XY" value="Time" onChange={radioChange} />
-                    <label htmlFor="time">Time</label>
+                    <input type="radio" id={`timeXY${timerID}`} name={`XY${timerID}`} value="Time" onChange={radioChange} />
+                    <label htmlFor={`timeXY${timerID}`}>Time</label>
                 </div>
             )}
 
