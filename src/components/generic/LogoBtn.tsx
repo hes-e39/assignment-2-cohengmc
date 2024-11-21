@@ -8,19 +8,19 @@ const LogoBtn = ({ name, onClick }: BtnProps) => {
         <div>
             <button onClick={onClick} className="btn">
                 {name === 'play' ? (
-                    <img src={'./public/images/play-svgrepo-com.svg'} alt="play logo" className="btnLogo" />
+                    <img src={'./images/play-svgrepo-com.svg'} alt="play logo" className="btnLogo" />
                 ) : name === 'pause' ? (
-                    <img src={'./public/images/pause-alt-svgrepo-com.svg'} alt="pause logo" className="btnLogo" />
+                    <img src={'./images/pause-alt-svgrepo-com.svg'} alt="pause logo" className="btnLogo" />
                 ) : name === 'reset' ? (
-                    <img src="./public/images/reset-svgrepo-com.svg" alt="reset logo" className="btnLogo" />
+                    <img src="./images/reset-svgrepo-com.svg" alt="reset logo" className="btnLogo" />
                 ) : name === 'back' ? (
-                    <img src="./public/images/left-arrow-svgrepo-com.svg" alt="back logo" className="btnLogo" />
+                    <img src="./images/left-arrow-svgrepo-com.svg" alt="back logo" className="btnLogo" />
                 ) : name === 'ff' ? (
-                    <img src="./public/images/fast-forward-svgrepo-com.svg" alt="ff logo" className="btnLogo" />
+                    <img src="./images/fast-forward-svgrepo-com.svg" alt="ff logo" className="btnLogo" />
                 ) : name === 'trash' ? (
-                    <img src="./public/images/trash.svg" alt="trash logo" className="btnLogo" />
+                    <img src="./images/trash.svg" alt="trash logo" className="btnLogo" />
                 ) : (
-                    <img src="./public/images/alert-error-svgrepo-com.svg" alt="reset logo" className="btnLogo" />
+                    <img src="./images/alert-error-svgrepo-com.svg" alt="reset logo" className="btnLogo" />
                 )}
             </button>
         </div>
