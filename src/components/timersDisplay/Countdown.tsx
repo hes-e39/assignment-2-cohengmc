@@ -1,16 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { userInputCleanup } from '../../utils/helpers';
-import { TimerDataContext } from '../../views/AddView';
 import HomeBtnsWithBack from '../generic/HomeBtnsWithBack';
 import NumberpadInput from '../generic/NumberpadInput';
 import TimerDisplay from '../generic/TimerDisplay';
 
-interface TimerProps {
-    timerID: number;
-}
-
-const Stopwatch = ({ timerID }: TimerProps) => {
-    const timerData = useContext(TimerDataContext);
+const Countdown = () => {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [isDone, setIsDone] = useState(false);
@@ -21,12 +15,12 @@ const Stopwatch = ({ timerID }: TimerProps) => {
         let interval = null;
 
         if (isRunning) {
-            if (seconds === userInputCleanup(timerInput)) {
+            if (seconds === 0) {
                 setIsDone(true);
                 setIsRunning(false);
             }
             interval = setTimeout(() => {
-                setSeconds(prevseconds => prevseconds + 1);
+                setSeconds(prevseconds => prevseconds - 1);
             }, 1000);
         } else if (!isRunning && seconds !== 0 && interval != null) {
             clearInterval(interval);
@@ -34,13 +28,13 @@ const Stopwatch = ({ timerID }: TimerProps) => {
         if (interval != null) {
             return () => clearTimeout(interval);
         }
-    }, [isRunning, seconds, timerInput]);
+    }, [isRunning, seconds]);
 
     const timeChange = () => {
         setIsRunning(!isRunning);
     };
     const handleReset = () => {
-        setSeconds(0); //userInputCleanup(timerInput)
+        setSeconds(userInputCleanup(timerInput));
         setIsRunning(false);
         setIsDone(false);
     };
@@ -48,7 +42,7 @@ const Stopwatch = ({ timerID }: TimerProps) => {
     const handleInputBtnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const target = event.target as HTMLElement;
         if (target.innerText === 'Set') {
-            setSeconds(0);
+            setSeconds(userInputCleanup(timerInput));
             if (userInputCleanup(timerInput) > 0) {
                 setIsInputSet(true);
             }
@@ -85,4 +79,4 @@ const Stopwatch = ({ timerID }: TimerProps) => {
         </div>
     );
 };
-export default Stopwatch;
+export default Countdown;

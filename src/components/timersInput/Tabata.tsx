@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { formatTime, userInputCleanup } from '../../utils/helpers';
 import { TimerDataContext } from '../../views/AddView';
+import DeleteSetDisplay from '../generic/DeleteSetDisplay';
 import LogoBtn from '../generic/LogoBtn';
 import NumberpadInput from '../generic/NumberpadInput';
 
@@ -18,6 +19,8 @@ const Tabata = ({ timerID }: TimerProps) => {
     });
 
     const inputSet = timerData.timerData[timerID].work !== 0;
+    const cacheTimerData = localStorage.getItem('timerData');
+    const parsedTimerData = cacheTimerData !== null && JSON.parse(cacheTimerData);
 
     const handleInputBtnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const target = event.target as HTMLElement;
@@ -55,6 +58,14 @@ const Tabata = ({ timerID }: TimerProps) => {
         newTimerData[timerID] = currentTimerData;
         timerData.setTimerData(newTimerData);
     };
+
+    const handleDeleteBtn = () => {
+        // biome-ignore lint/style/useConst: <explanation>
+        let newTimerData = [...timerData.timerData];
+        newTimerData.splice(timerID, 1);
+        timerData.setTimerData(newTimerData);
+    };
+
     const radioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const eventValue = event.target.value;
         setUserData({ ...userData, userSelect: eventValue });
@@ -63,19 +74,15 @@ const Tabata = ({ timerID }: TimerProps) => {
     return (
         <div className="clockContainer">
             <div>
-                <p className="supportingText">Tabata</p>
-                <p className="supportingText">Rounds: {userData.roundAmountInput}</p>
+                <p className="supportingText clockLabel">Tabata</p>
+                <p className="supportingText">Rounds: {inputSet ? parsedTimerData[timerID].rounds : userData.roundAmountInput}</p>
 
                 <div>
                     <p className="supportingText">
-                        Work:{' '}
-                        {inputSet ? formatTime(userInputCleanup(userData.roundWorkDurationInput)) : `${userData.roundWorkDurationInput.slice(0, 2)}:${userData.roundWorkDurationInput.slice(2, 4)}`}
+                        Work: {inputSet ? formatTime(parsedTimerData[timerID].work) : `${userData.roundWorkDurationInput.slice(0, 2)}:${userData.roundWorkDurationInput.slice(2, 4)}`}
                     </p>
                     <p className="supportingText">
-                        Rest:{' '}
-                        {inputSet
-                            ? formatTime(userInputCleanup(userData.roundRestDurationInput))
-                            : `${userData.roundRestDurationInput.slice(0, 2)}:${userData.roundRestDurationInput.slice(2, 4)}`}{' '}
+                        Rest: {inputSet ? formatTime(parsedTimerData[timerID].rest) : `${userData.roundRestDurationInput.slice(0, 2)}:${userData.roundRestDurationInput.slice(2, 4)}`}{' '}
                     </p>
                 </div>
             </div>
@@ -96,6 +103,7 @@ const Tabata = ({ timerID }: TimerProps) => {
             )}
 
             {inputSet ? <LogoBtn onClick={handleBackBtn} name="back" /> : <NumberpadInput handleInputBtnClick={handleInputBtnClick} />}
+            <DeleteSetDisplay inputSet={inputSet} handleDeleteBtn={handleDeleteBtn} />
         </div>
     );
 };

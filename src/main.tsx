@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { Link, Outlet, RouterProvider, createHashRouter } from 'react-router-dom';
 
 import './index.css';
+import DocumentationView from './components/deprecatedViews/DocumentationView';
 import AddView from './views/AddView';
-import DocumentationView from './views/DocumentationView';
-import TimersView from './views/TimersView';
+import HomeView from './views/HomeView';
 
 const PageIndex = () => {
     return (
@@ -31,7 +31,7 @@ const router = createHashRouter([
         children: [
             {
                 index: true,
-                element: <TimersView />,
+                element: <HomeView />,
             },
             {
                 path: '/docs',

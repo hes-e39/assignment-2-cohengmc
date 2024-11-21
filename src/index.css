@@ -30,6 +30,7 @@ th {
   font-feature-settings: "tnum";
   font-variant-numeric: 'tabular-nums lining-nums';
   color: red;
+  user-select: none;
 }
 
 .clockContainer {
@@ -41,6 +42,7 @@ th {
   flex-direction: column;
   align-items: center;
   gap: 1em;
+  position: relative;
 }
 
 .supportingText {
@@ -49,6 +51,7 @@ th {
   font-feature-settings: "tnum";
   font-variant-numeric: 'tabular-nums lining-nums';
   color: red;
+  user-select: none;
 }
 
 .btn {
@@ -57,6 +60,7 @@ th {
   border-radius: 8px;
   padding: .5em;
   cursor: pointer;
+  user-select: none;
 }
 
 .btn:hover {
@@ -125,4 +129,41 @@ th {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.setContainer {
+  position: absolute;
+  right: 2%;
+  top: 2%;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.setText {
+  font-size: 4vw;
+  margin: .1em;
+  font-feature-settings: "tnum";
+  font-variant-numeric: 'tabular-nums lining-nums';
+  background-color: lightgreen;
+  padding: 0em .2em;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.notSetText {
+  font-size: 4vw;
+  margin: .1em;
+  font-feature-settings: "tnum";
+  font-variant-numeric: 'tabular-nums lining-nums';
+  background-color: red;
+  padding: 0em .2em;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.clockLabel {
+  position: absolute;
+  left: 2%;
+  top: 2%;
 }

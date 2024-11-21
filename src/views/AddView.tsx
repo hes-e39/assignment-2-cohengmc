@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextBtn from '../components/generic/TextBtn';
 
-import Countdown from '../components/timers/Countdown';
-import Stopwatch from '../components/timers/Stopwatch';
-import Tabata from '../components/timers/Tabata';
-import XY from '../components/timers/XY';
+import Countdown from '../components/timersInput/Countdown';
+import Stopwatch from '../components/timersInput/Stopwatch';
+import Tabata from '../components/timersInput/Tabata';
+import XY from '../components/timersInput/XY';
 
 const Timers = styled.div`
   display: flex;
@@ -36,18 +37,44 @@ const AddTimerContainer = styled.div`
 
 const TimerTitle = styled.div``;
 
+interface TimerData {
+    type: string;
+    time: number;
+    rounds: number;
+    work: number;
+    rest: number;
+}
+
 export const TimerDataContext = createContext({
     timerData: [{ type: '', time: 0, rounds: 0, work: 0, rest: 0 }],
-    setTimerData: (timerData: [{ type: string; time: number; rounds: number; work: number; rest: number }]) => {},
+    setTimerData: (timerData: TimerData[]) => {},
 });
 
+const blankTimer = [{ type: '', time: 0, rounds: 0, work: 0, rest: 0 }];
+
 const AddView = () => {
-    const [timerData, setTimerData] = useState([{ type: '', time: 0, rounds: 0, work: 0, rest: 0 }]);
+    const [timerData, setTimerData] = useState([{ type: 'reload', time: 0, rounds: 0, work: 0, rest: 0 }]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const cacheTimerData = localStorage.getItem('timerData');
+        let parsedTimerData = cacheTimerData !== null && JSON.parse(cacheTimerData);
+        if (!parsedTimerData) parsedTimerData = blankTimer;
+        setTimerData(parsedTimerData);
+    }, []);
+
+    if (timerData.length === 0) {
+        setTimerData(blankTimer);
+    } else if (timerData[0].type !== 'reload') {
+        localStorage.setItem('timerData', JSON.stringify(timerData));
+    }
 
     const handleAddTimer = (event: React.MouseEvent<HTMLButtonElement>) => {
         const target = event.target as HTMLElement;
         const newTimer = { type: target.innerText, time: 0, rounds: 0, work: 0, rest: 0 };
-        if (timerData[0].type === '') {
+        if (timerData.length === 0) {
+            setTimerData([newTimer]);
+        } else if (timerData[0].type === '') {
             setTimerData([newTimer]);
         } else if (timerData.length >= 10) {
             alert('Limit of 10 timers reached, please delete timers to add more.');
@@ -71,8 +98,13 @@ const AddView = () => {
         }
     }
 
+    const handleDone = () => {
+        navigate('/');
+    };
+
     return (
         <TimerDataContext.Provider value={{ timerData, setTimerData }}>
+            <TextBtn onClick={handleDone} key={`doneButton`} name={'Done'} />
             <Timers>
                 {timerData.map((timer, index) =>
                     timerData[0].type !== '' ? (

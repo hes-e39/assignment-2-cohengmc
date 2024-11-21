@@ -17,6 +17,8 @@ const LogoBtn = ({ name, onClick }: BtnProps) => {
                     <img src="./public/images/left-arrow-svgrepo-com.svg" alt="back logo" className="btnLogo" />
                 ) : name === 'ff' ? (
                     <img src="./public/images/fast-forward-svgrepo-com.svg" alt="ff logo" className="btnLogo" />
+                ) : name === 'trash' ? (
+                    <img src="./public/images/trash.svg" alt="trash logo" className="btnLogo" />
                 ) : (
                     <img src="./public/images/alert-error-svgrepo-com.svg" alt="reset logo" className="btnLogo" />
                 )}

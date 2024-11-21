@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import Stopwatch from '../components/timers/Stopwatch';
-import Countdown from '../components/timers/Countdown';
-import XY from '../components/timers/XY';
-import Tabata from '../components/timers/Tabata';
+import Countdown from '../deprecatedTimers/Countdown';
+import Stopwatch from '../deprecatedTimers/Stopwatch';
+import Tabata from '../deprecatedTimers/Tabata';
+import XY from '../deprecatedTimers/XY';
 
 const Timers = styled.div`
   display: flex;
@@ -24,8 +24,8 @@ const TimersView = () => {
     const timers = [
         { title: 'Stopwatch', C: <Stopwatch /> },
         { title: 'Countdown', C: <Countdown /> },
-        { title: 'XY', C: <XY /> },
-        { title: 'Tabata', C: <Tabata /> },
+        { title: 'XY', C: <XY timerID={0} /> },
+        { title: 'Tabata', C: <Tabata timerID={0} /> },
     ];
 
     return (

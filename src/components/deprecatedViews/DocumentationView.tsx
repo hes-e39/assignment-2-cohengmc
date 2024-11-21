@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import DocumentComponent from '../components/documentation/DocumentComponent';
+import DocumentComponent from '../documentation/DocumentComponent';
 
-import Loading from '../components/generic/Loading';
+import Loading from '../generic/Loading';
 
 const Container = styled.div`
   display: flex;
