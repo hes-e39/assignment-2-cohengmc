@@ -1,110 +1,74 @@
-import { useEffect, useState } from 'react';
-import { userInputCleanup } from '../../utils/helpers';
-import HomeBtnsWithBack from '../generic/HomeBtnsWithBack';
+import { useContext, useState } from 'react';
+import { formatTime, userInputCleanup } from '../../utils/helpers';
+import { TimerDataContext } from '../../views/AddView';
+import LogoBtn from '../generic/LogoBtn';
 import NumberpadInput from '../generic/NumberpadInput';
-import TimerDisplay from '../generic/TimerDisplay';
 
 interface TimerProps {
-    timerID: string;
+    timerID: number;
 }
 
 const XY = ({ timerID }: TimerProps) => {
-    const [seconds, setSeconds] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
-    const [isInputSet, setIsInputSet] = useState(false);
-    const [isDone, setIsDone] = useState(false);
-    const [roundsRemaining, setRoundsRemaining] = useState(0);
-    const [roundDurationInput, setRoundDurationInput] = useState('0000');
-    const [roundAmountInput, setRoundAmountInput] = useState('00');
-    const [userSelect, setUserSelect] = useState('');
+    const timerData = useContext(TimerDataContext);
+    const [userData, setUserData] = useState({
+        roundWorkDurationInput: '0000',
+        roundAmountInput: '00',
+        userSelect: '',
+    });
 
-    useEffect(() => {
-        let interval = null;
-
-        if (isRunning) {
-            if (roundsRemaining === Number(roundAmountInput)) {
-                setRoundsRemaining(roundsRemaining - 1);
-            }
-            if (seconds === 0) {
-                if (roundsRemaining === 0) {
-                    setIsRunning(false);
-                    setIsDone(true);
-                } else {
-                    setRoundsRemaining(roundsRemaining - 1);
-                    setSeconds(userInputCleanup(roundDurationInput));
-                }
-            }
-            interval = setTimeout(() => {
-                setSeconds(prevseconds => prevseconds - 1);
-            }, 1000);
-        } else if (!isRunning && seconds !== 0 && interval != null) {
-            clearInterval(interval);
-        }
-        if (interval != null) {
-            return () => clearTimeout(interval);
-        }
-    }, [isRunning, seconds, roundsRemaining, roundDurationInput, roundAmountInput]);
-
-    const timeChange = () => {
-        setIsRunning(!isRunning);
-    };
-    const handleReset = () => {
-        setIsDone(false);
-        setSeconds(userInputCleanup(roundDurationInput));
-        setRoundsRemaining(Number(roundAmountInput));
-        setIsRunning(false);
-    };
+    const inputSet = timerData.timerData[timerID].work !== 0;
 
     const handleInputBtnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const target = event.target as HTMLElement;
         if (target.innerText === 'Set') {
-            setSeconds(userInputCleanup(roundDurationInput));
-            setRoundsRemaining(Number(roundAmountInput));
-            if (userInputCleanup(roundDurationInput) > 0 && Number(roundAmountInput) > 0) {
-                setIsInputSet(true);
+            if (userInputCleanup(userData.roundWorkDurationInput) > 0 && Number(userData.roundAmountInput) > 0) {
+                const currentTimerData = {
+                    type: 'XY',
+                    time: 0,
+                    rounds: Number(userData.roundAmountInput),
+                    work: userInputCleanup(userData.roundWorkDurationInput),
+                    rest: 0,
+                };
+                // biome-ignore lint/style/useConst: <explanation>
+                let newTimerData = [...timerData.timerData];
+                newTimerData[timerID] = currentTimerData;
+                timerData.setTimerData(newTimerData);
             }
         } else if (target.innerText === 'Clear') {
-            setRoundDurationInput('0000');
-            setRoundAmountInput('00');
+            setUserData({ ...userData, roundWorkDurationInput: '0000', roundAmountInput: '00' });
         } else {
-            if (userSelect === 'Time') {
-                setRoundDurationInput(roundDurationInput.slice(1) + target.innerText);
-            } else if (userSelect === 'Rounds') {
-                setRoundAmountInput(roundAmountInput.slice(1) + target.innerText);
+            if (userData.userSelect === 'Time') {
+                setUserData({ ...userData, roundWorkDurationInput: userData.roundWorkDurationInput.slice(1) + target.innerText });
+            } else if (userData.userSelect === 'Rounds') {
+                setUserData({ ...userData, roundAmountInput: userData.roundAmountInput.slice(1) + target.innerText });
             }
         }
     };
     const handleBackBtn = () => {
-        setIsRunning(false);
-        setRoundDurationInput('0000');
-        setRoundAmountInput('00');
-        setUserSelect('');
-        setIsInputSet(false);
-        setIsDone(false);
+        setUserData({ ...userData, roundAmountInput: '00', roundWorkDurationInput: '0000', userSelect: '' });
+        const currentTimerData = { type: 'XY', time: 0, rounds: 0, work: 0, rest: 0 };
+        // biome-ignore lint/style/useConst: <explanation>
+        let newTimerData = [...timerData.timerData];
+        newTimerData[timerID] = currentTimerData;
+        timerData.setTimerData(newTimerData);
     };
     const radioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const eventValue = event.target.value;
-        setUserSelect(eventValue);
-    };
-    const handleFF = () => {
-        setRoundsRemaining(0);
-        setIsDone(true);
+        setUserData({ ...userData, userSelect: eventValue });
     };
 
     return (
         <div className="clockContainer">
             <div>
-                {isInputSet ? <p className="supportingText">Rounds Remaining: {roundsRemaining}</p> : <p className="supportingText">Rounds: {roundAmountInput}</p>}
-                {isDone ? (
-                    <h1 className="clockStyle">DO:NE</h1>
-                ) : isInputSet ? (
-                    <TimerDisplay seconds={seconds} />
-                ) : (
-                    <p className="supportingText">Time per Round: {`${roundDurationInput.slice(0, 2)}:${roundDurationInput.slice(2, 4)}`}</p>
-                )}
+                <p className="supportingText">XY</p>
+                <p className="supportingText">Rounds: {userData.roundAmountInput}</p>
+                <p className="supportingText">
+                    Round Time:{' '}
+                    {inputSet ? formatTime(userInputCleanup(userData.roundWorkDurationInput)) : `${userData.roundWorkDurationInput.slice(0, 2)}:${userData.roundWorkDurationInput.slice(2, 4)}`}
+                </p>
             </div>
 
-            {isInputSet ? (
+            {inputSet ? (
                 ''
             ) : (
                 <div className="button-group">
@@ -116,11 +80,7 @@ const XY = ({ timerID }: TimerProps) => {
                 </div>
             )}
 
-            {isInputSet ? (
-                <HomeBtnsWithBack timeChange={timeChange} handleReset={handleReset} handleBackBtn={handleBackBtn} handleFF={handleFF} isRunning={isRunning} />
-            ) : (
-                <NumberpadInput handleInputBtnClick={handleInputBtnClick} />
-            )}
+            {inputSet ? <LogoBtn onClick={handleBackBtn} name="back" /> : <NumberpadInput handleInputBtnClick={handleInputBtnClick} />}
         </div>
     );
 };
