@@ -4,10 +4,10 @@ import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextBtn from '../components/generic/TextBtn';
 
-import Countdown from '../components/timersInput/Countdown';
-import Stopwatch from '../components/timersInput/Stopwatch';
-import Tabata from '../components/timersInput/Tabata';
-import XY from '../components/timersInput/XY';
+import Countdown from '../components/timersInput/CountdownInput';
+import Stopwatch from '../components/timersInput/StopwatchInput';
+import Tabata from '../components/timersInput/TabataInput';
+import XY from '../components/timersInput/XYInput';
 
 const Timers = styled.div`
   display: flex;
@@ -18,12 +18,12 @@ justify-content: center;
   gap: 1rem;
 `;
 
-const Timer = styled.div`
-  border: 1px solid gray;
-  padding: 20px;
-  margin: 10px;
-  font-size: 1.5rem;
-`;
+// const Timer = styled.div`
+//   border: 1px solid gray;
+//   padding: 20px;
+//   margin: 10px;
+//   font-size: 1.5rem;
+// `;
 
 const AddTimerContainer = styled.div`
   border: 1px solid gray;
@@ -47,7 +47,9 @@ interface TimerData {
 
 export const TimerDataContext = createContext({
     timerData: [{ type: '', time: 0, rounds: 0, work: 0, rest: 0 }],
-    setTimerData: (timerData: TimerData[]) => {},
+    setTimerData: (timerData: TimerData[]) => {
+        timerData;
+    },
 });
 
 const blankTimer = [{ type: '', time: 0, rounds: 0, work: 0, rest: 0 }];

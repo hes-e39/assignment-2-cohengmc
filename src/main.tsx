@@ -1,28 +1,28 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Link, Outlet, RouterProvider, createHashRouter } from 'react-router-dom';
+import { RouterProvider, createHashRouter } from 'react-router-dom';
 
 import './index.css';
 import DocumentationView from './components/deprecatedViews/DocumentationView';
 import AddView from './views/AddView';
 import HomeView from './views/HomeView';
 
-const PageIndex = () => {
-    return (
-        <div>
-            <h1>Assignment</h1>
-            <ul>
-                <li>
-                    <Link to="/">Timers</Link>
-                </li>
-                <li>
-                    <Link to="/docs">Documentation</Link>
-                </li>
-            </ul>
-            <Outlet />
-        </div>
-    );
-};
+// const PageIndex = () => {
+//     return (
+//         <div>
+//             <h1>Assignment</h1>
+//             <ul>
+//                 <li>
+//                     <Link to="/">Timers</Link>
+//                 </li>
+//                 <li>
+//                     <Link to="/docs">Documentation</Link>
+//                 </li>
+//             </ul>
+//             <Outlet />
+//         </div>
+//     );
+// };
 
 const router = createHashRouter([
     {
@@ -45,7 +45,6 @@ const router = createHashRouter([
     },
 ]);
 
-// biome-ignore lint/style/noNonNullAssertion: root html element is there
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <RouterProvider router={router} />

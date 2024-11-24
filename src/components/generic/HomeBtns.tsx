@@ -4,15 +4,16 @@ interface BtnProps {
     isRunning: boolean;
     timeChange: (event: React.MouseEvent<HTMLButtonElement>) => void;
     handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void;
-
+    handleFF: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const HomeBtns = ({ timeChange, handleReset, isRunning }: BtnProps) => {
+const HomeBtns = ({ timeChange, handleReset, handleFF, isRunning }: BtnProps) => {
     return (
         <div>
             <div className="btnContainer">
                 <LogoBtn onClick={timeChange} name={!isRunning ? 'play' : 'pause'} />
                 <LogoBtn onClick={handleReset} name="reset" />
+                <LogoBtn onClick={handleFF} name="ff" />
             </div>
         </div>
     );
