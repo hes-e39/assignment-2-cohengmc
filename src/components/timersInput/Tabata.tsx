@@ -25,7 +25,7 @@ const Tabata = ({ timerID }: TimerProps) => {
     const handleInputBtnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const target = event.target as HTMLElement;
         if (target.innerText === 'Set') {
-            if (userInputCleanup(userData.roundWorkDurationInput) > 0 && Number(userData.roundAmountInput) > 0) {
+            if (userInputCleanup(userData.roundWorkDurationInput) > 0 && userInputCleanup(userData.roundRestDurationInput) > 0 && Number(userData.roundAmountInput) > 0) {
                 const currentTimerData = {
                     type: 'Tabata',
                     time: 0,

@@ -99,7 +99,31 @@ const AddView = () => {
     }
 
     const handleDone = () => {
-        navigate('/');
+        let timersSet = 0;
+        for (const timer of timerData) {
+            if (timer.type === '') {
+                navigate('/');
+            } else if (timer.type === 'Stopwatch') {
+                if (timer.time > 0) {
+                    timersSet++;
+                }
+            } else if (timer.type === 'Countdown') {
+                if (timer.time > 0) {
+                    timersSet++;
+                }
+            } else if (timer.type === 'XY') {
+                if (timer.work > 0 && timer.rounds > 0) {
+                    timersSet++;
+                }
+            } else if (timer.type === 'Tabata') {
+                if (timer.work > 0 && timer.rounds > 0 && timer.rest > 0) {
+                    timersSet++;
+                }
+            }
+        }
+        if (timersSet === timerData.length) {
+            navigate('/');
+        }
     };
 
     return (
