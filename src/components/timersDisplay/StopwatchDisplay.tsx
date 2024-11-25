@@ -11,6 +11,12 @@ const Stopwatch = ({ time }: TimerProps) => {
     const [seconds, setSeconds] = useState(0);
 
     useEffect(() => {
+        if (globalTimerData.hardReset) {
+            setSeconds(0);
+        }
+    }, [globalTimerData]);
+
+    useEffect(() => {
         let interval = null;
 
         if (globalTimerData.isRunning && !globalTimerData.timerComplete) {

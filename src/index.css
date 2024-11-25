@@ -10,6 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: lightcyan;
 }
 
 code {
@@ -60,7 +61,7 @@ th {
 
 .btn {
   background-color: whitesmoke;
-  border: none;
+  border: 1px solid black;
   border-radius: 8px;
   padding: .5em;
   cursor: pointer;
@@ -130,10 +131,14 @@ th {
 }
 
 .tabataInfo {
+  position: absolute;
+  top: 0%;
+  margin: auto;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 1em;
 }
+
 
 .setContainer {
   position: absolute;
@@ -193,4 +198,16 @@ th {
 
 .activeText {
   color: lightgreen
+}
+
+.snapshot {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 7.1em;
+  align-items: center;
+  padding: 5em;
+  justify-content: start;
+  user-select: none;
+  min-height: 5lh;
 }

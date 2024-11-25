@@ -11,6 +11,12 @@ const Countdown = ({ time }: TimerProps) => {
     const [seconds, setSeconds] = useState(time);
 
     useEffect(() => {
+        if (globalTimerData.hardReset) {
+            setSeconds(time);
+        }
+    }, [globalTimerData, time]);
+
+    useEffect(() => {
         let interval = null;
 
         if (globalTimerData.isRunning && !globalTimerData.timerComplete) {

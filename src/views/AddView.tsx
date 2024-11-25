@@ -143,7 +143,7 @@ const AddView = () => {
                 <TextBtn onClick={handleAddTimer} key={`Tabata`} name={'Tabata'} />
             </AddTimerContainer>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <TextBtn onClick={handleDone} key={`doneButton`} name={'Done'} />
+                <TextBtn onClick={handleDone} key={`doneButton`} name={'Run Workout'} />
             </div>
         </TimerDataContext.Provider>
     );

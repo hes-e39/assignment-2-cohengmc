@@ -13,6 +13,13 @@ const XY = ({ work, rounds }: TimerProps) => {
     const [roundsRemaining, setRoundsRemaining] = useState(rounds);
 
     useEffect(() => {
+        if (globalTimerData.hardReset) {
+            setSeconds(work);
+            setRoundsRemaining(rounds);
+        }
+    }, [globalTimerData, work, rounds]);
+
+    useEffect(() => {
         let interval = null;
 
         if (globalTimerData.isRunning && !globalTimerData.timerComplete) {
@@ -40,7 +47,7 @@ const XY = ({ work, rounds }: TimerProps) => {
 
     return (
         <div className="clockContainer">
-            <p className="supportingText">Rounds Remaining: {roundsRemaining}</p>
+            <p className="supportingText tabataInfo">Rounds Remaining: {roundsRemaining}</p>
             <TimerDisplay seconds={seconds} />
         </div>
     );

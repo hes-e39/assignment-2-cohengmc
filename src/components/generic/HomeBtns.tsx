@@ -11,8 +11,8 @@ const HomeBtns = ({ timeChange, handleReset, handleFF, isRunning }: BtnProps) =>
     return (
         <div>
             <div className="btnContainer">
-                <LogoBtn onClick={timeChange} name={!isRunning ? 'play' : 'pause'} />
                 <LogoBtn onClick={handleReset} name="reset" />
+                <LogoBtn onClick={timeChange} name={!isRunning ? 'play' : 'pause'} />
                 <LogoBtn onClick={handleFF} name="ff" />
             </div>
         </div>

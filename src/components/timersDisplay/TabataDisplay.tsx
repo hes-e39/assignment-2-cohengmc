@@ -15,6 +15,14 @@ const Tabata = ({ work, rest, rounds }: TimerProps) => {
     const [isWorking, setIsWorking] = useState(true);
 
     useEffect(() => {
+        if (globalTimerData.hardReset) {
+            setSeconds(work);
+            setRoundsRemaining(rounds);
+            setIsWorking(true);
+        }
+    }, [globalTimerData, work, rounds]);
+
+    useEffect(() => {
         let interval = null;
 
         if (globalTimerData.isRunning && !globalTimerData.timerComplete) {
@@ -48,9 +56,9 @@ const Tabata = ({ work, rest, rounds }: TimerProps) => {
 
     return (
         <div className="clockContainer">
-            <div className="tabataInfo">
-                <p className="supportingText">Rounds Remaining: {roundsRemaining}</p>
-                <p className={`supportingText ${isWorking ? 'activeText' : ''}`}>{isWorking ? 'Active' : 'Rest'}</p>
+            <div className="supportingText tabataInfo">
+                <div>Rounds Remaining: {roundsRemaining}</div>
+                <div className={`supportingText ${isWorking ? 'activeText' : ''}`}>{isWorking ? 'Active' : 'Rest'}</div>
             </div>
             <TimerDisplay seconds={seconds} />
         </div>

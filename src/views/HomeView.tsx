@@ -17,19 +17,13 @@ const Timers = styled.div`
   gap: 1em
 `;
 
-const Timer = styled.div`
-  border: 1px solid gray;
-  padding: 20px;
-  margin: 10px;
-  font-size: 1.5rem;
-`;
-
 export const GlobalTimerData = createContext({
     isRunning: false,
     timerComplete: false,
     setTimerComplete: (timerComplete: boolean) => {
         timerComplete;
     },
+    hardReset: false,
 });
 
 interface TimerData {
@@ -46,6 +40,7 @@ const TimersView = () => {
     const [timerComplete, setTimerComplete] = useState(false);
     const [currentTimerID, setCurrentTimerID] = useState(0);
     const [isWorkoutDone, setIsWorkoutDone] = useState(false);
+    const [hardReset, setHardReset] = useState(false);
 
     const cacheTimerData = localStorage.getItem('timerData');
     const parsedTimerData = cacheTimerData !== null && JSON.parse(cacheTimerData);
@@ -82,12 +77,16 @@ const TimersView = () => {
 
     const timeChange = () => {
         //pause and play
-        if (!isWorkoutDone) {
+        setHardReset(false);
+        if (!isWorkoutDone && isAtLeastOneTimer) {
             setIsRunning(!isRunning);
         }
     };
     const handleReset = () => {
         // reset back to the begining, should double check with user
+        if (currentTimerID === 0) {
+            setHardReset(true);
+        }
         setTimerComplete(false);
         setCurrentTimerID(0);
         setIsWorkoutDone(false);
@@ -95,7 +94,7 @@ const TimersView = () => {
     };
 
     const handleFF = () => {
-        if (currentTimerID + 1 === parsedTimerData.length) {
+        if (currentTimerID + 1 === parsedTimerData.length && isAtLeastOneTimer) {
             setIsWorkoutDone(true);
             setTimerComplete(false);
             setIsRunning(false);
@@ -109,15 +108,30 @@ const TimersView = () => {
     };
 
     return (
-        <GlobalTimerData.Provider value={{ isRunning, timerComplete, setTimerComplete }}>
+        <GlobalTimerData.Provider value={{ isRunning, timerComplete, setTimerComplete, hardReset }}>
             <Timers>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {parsedTimerData.map((timer: TimerData, index: number) =>
-                        parsedTimerData[0].type !== '' ? <TimerSnapshot key={`timerSnapshot${index}`} timer={timer} index={index} isWorkoutDone={isWorkoutDone} currentTimerID={currentTimerID} /> : '',
+                        isAtLeastOneTimer ? <TimerSnapshot key={`timerSnapshot${index}`} timer={timer} index={index} isWorkoutDone={isWorkoutDone} currentTimerID={currentTimerID} /> : '',
                     )}
-                    <p>Total Workout Time: {getTotalTime()}</p>
+                    <p
+                        style={{
+                            alignSelf: 'center',
+                            userSelect: 'none',
+                        }}
+                    >
+                        Total Workout Time: {getTotalTime()}
+                    </p>
                 </div>
-                <Timer>{isWorkoutDone ? <h1 className="clockStyle">DO:NE</h1> : isAtLeastOneTimer ? getTimer() : <h2>Add a timer!</h2>}</Timer>
+                {isWorkoutDone ? (
+                    <div className="clockContainer">
+                        <h1 className="clockStyle">DO:NE</h1>
+                    </div>
+                ) : isAtLeastOneTimer ? (
+                    getTimer()
+                ) : (
+                    <h2>Add a timer!</h2>
+                )}
                 <HomeBtns timeChange={timeChange} handleReset={handleReset} handleFF={handleFF} isRunning={isRunning} />
                 <TextBtn onClick={handleGoToEdit} key={`editButton`} name={'Edit Workout'} />
             </Timers>

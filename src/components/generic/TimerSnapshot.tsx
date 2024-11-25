@@ -18,12 +18,26 @@ interface SnapshotProps {
 const TimerSnapshot = ({ timer, index, currentTimerID, isWorkoutDone }: SnapshotProps) => {
     return (
         <div
-            className={`${index < currentTimerID || isWorkoutDone ? 'complete' : 'notStarted'} ${index === currentTimerID && !isWorkoutDone ? 'active' : ''}`}
-            style={{ border: '1px solid black', display: 'flex', flexDirection: 'column', width: '5rem', alignItems: 'center', padding: '.5em', justifyContent: 'center', userSelect: 'none' }}
+            className={`${index < currentTimerID || isWorkoutDone ? 'complete' : 'notStarted'} ${index === currentTimerID && !isWorkoutDone ? 'active' : ''} `}
+            style={{
+                border: '1px solid black',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '.3em',
+                justifyContent: 'start',
+                userSelect: 'none',
+                minHeight: '5lh',
+                borderRadius: '8px',
+            }}
         >
-            <p>{timer.type}</p>
+            <p>
+                #{index + 1}: {timer.type}
+            </p>
             {timer.type === 'Stopwatch' || timer.type === 'Countdown' ? (
-                <p className="miniClock">{formatTime(timer.time)}</p>
+                <div style={{ paddingTop: '1lh' }}>
+                    <p className="miniClock">{formatTime(timer.time)}</p>
+                </div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.1em' }}>
                     <p>Rounds: {timer.rounds}</p>
