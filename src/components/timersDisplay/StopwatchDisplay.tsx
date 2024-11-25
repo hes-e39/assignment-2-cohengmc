@@ -13,13 +13,15 @@ const Stopwatch = ({ time }: TimerProps) => {
     useEffect(() => {
         let interval = null;
 
-        if (globalTimerData.isRunning && !globalTimerData.currentTimerDone) {
+        if (globalTimerData.isRunning && !globalTimerData.timerComplete) {
             if (seconds === time) {
-                globalTimerData.setCurrentTimerDone(true);
+                globalTimerData.setTimerComplete(true);
+                setSeconds(0);
+            } else if (seconds < time) {
+                interval = setTimeout(() => {
+                    setSeconds(prevseconds => prevseconds + 1);
+                }, 1000);
             }
-            interval = setTimeout(() => {
-                setSeconds(prevseconds => prevseconds + 1);
-            }, 1000);
         } else if (!globalTimerData.isRunning && seconds !== 0 && interval != null) {
             clearTimeout(interval);
         }

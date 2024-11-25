@@ -10,25 +10,20 @@ interface TimerProps {
 
 const Tabata = ({ work, rest, rounds }: TimerProps) => {
     const globalTimerData = useContext(GlobalTimerData);
-    const [seconds, setSeconds] = useState(0);
-    const [roundsRemaining, setRoundsRemaining] = useState(0);
+    const [seconds, setSeconds] = useState(work);
+    const [roundsRemaining, setRoundsRemaining] = useState(rounds);
     const [isWorking, setIsWorking] = useState(true);
-
-    useEffect(() => {
-        setSeconds(work);
-        setRoundsRemaining(rounds);
-    }, [work, rounds]);
 
     useEffect(() => {
         let interval = null;
 
-        if (globalTimerData.isRunning && !globalTimerData.currentTimerDone) {
+        if (globalTimerData.isRunning && !globalTimerData.timerComplete) {
             if (roundsRemaining === rounds) {
                 setRoundsRemaining(roundsRemaining - 1);
             }
             if (seconds === 0) {
                 if (roundsRemaining === 0) {
-                    globalTimerData.setCurrentTimerDone(true);
+                    globalTimerData.setTimerComplete(true);
                 } else {
                     if (isWorking) {
                         setSeconds(rest);

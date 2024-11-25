@@ -36,4 +36,33 @@ function userInputCleanup(userInput: string) {
     return totalTime;
 }
 
-export { formatTime, userInputCleanup };
+function getTotalTime() {
+    const cacheTimerData = localStorage.getItem('timerData');
+    const parsedTimerData = cacheTimerData !== null && JSON.parse(cacheTimerData);
+    const isAtLeastOneTimer = parsedTimerData[0].type !== '';
+
+    if (isAtLeastOneTimer) {
+        let totalTime = 0;
+
+        for (let i = 0; i < parsedTimerData.length; i++) {
+            const timer = parsedTimerData[i];
+            if (timer.type === 'Stopwatch' || timer.type === 'Countdown') {
+                totalTime = totalTime + timer.time;
+            }
+
+            if (timer.type === 'XY') {
+                totalTime = totalTime + timer.work * timer.rounds;
+            }
+
+            if (timer.type === 'Tabata') {
+                totalTime = totalTime + (timer.work + timer.rest) * timer.rounds;
+            }
+        }
+
+        return formatTime(totalTime);
+    }
+
+    return formatTime(0);
+}
+
+export { formatTime, userInputCleanup, getTotalTime };

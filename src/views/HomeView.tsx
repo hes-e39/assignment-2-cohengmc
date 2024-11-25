@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import HomeBtns from '../components/generic/HomeBtns';
 import TextBtn from '../components/generic/TextBtn';
+import TimerSnapshot from '../components/generic/TimerSnapshot';
 import Countdown from '../components/timersDisplay/CountdownDisplay';
 import Stopwatch from '../components/timersDisplay/StopwatchDisplay';
 import Tabata from '../components/timersDisplay/TabataDisplay';
 import XY from '../components/timersDisplay/XYDisplay';
+import { getTotalTime } from '../utils/helpers';
 
 const Timers = styled.div`
   display: flex;
@@ -23,24 +25,44 @@ const Timer = styled.div`
 
 export const GlobalTimerData = createContext({
     isRunning: false,
-    currentTimerDone: false,
-    setCurrentTimerDone: (currentTimerDone: boolean) => {
-        currentTimerDone;
+    timerComplete: false,
+    setTimerComplete: (timerComplete: boolean) => {
+        timerComplete;
     },
 });
+
+interface TimerData {
+    type: string;
+    time: number;
+    rounds: number;
+    work: number;
+    rest: number;
+}
 
 const TimersView = () => {
     const navigate = useNavigate();
     const [isRunning, setIsRunning] = useState(false);
+    const [timerComplete, setTimerComplete] = useState(false);
     const [currentTimerID, setCurrentTimerID] = useState(0);
-    const [currentTimerDone, setCurrentTimerDone] = useState(false);
+    const [isWorkoutDone, setIsWorkoutDone] = useState(false);
 
     const cacheTimerData = localStorage.getItem('timerData');
     const parsedTimerData = cacheTimerData !== null && JSON.parse(cacheTimerData);
     const isAtLeastOneTimer = parsedTimerData[0].type !== '';
+    const currentTimerData = parsedTimerData[currentTimerID];
 
-    function getTimer(currentTimerIndex: number) {
-        const currentTimerData = parsedTimerData[currentTimerIndex];
+    if (timerComplete) {
+        if (currentTimerID + 1 === parsedTimerData.length) {
+            setIsWorkoutDone(true);
+            setIsRunning(false);
+            setTimerComplete(false);
+        } else {
+            setTimerComplete(false);
+            setCurrentTimerID(currentTimerID + 1);
+        }
+    }
+
+    function getTimer() {
         if (currentTimerData.type === 'Stopwatch') {
             return <Stopwatch time={currentTimerData.time} />;
         }
@@ -59,26 +81,44 @@ const TimersView = () => {
 
     const timeChange = () => {
         //pause and play
-        setIsRunning(!isRunning);
+        if (!isWorkoutDone) {
+            setIsRunning(!isRunning);
+        }
     };
     const handleReset = () => {
         // reset back to the begining, should double check with user
+        setTimerComplete(false);
+        setCurrentTimerID(0);
+        setIsWorkoutDone(false);
+        setIsRunning(false);
     };
 
     const handleFF = () => {
-        // Go to next timer
-        // setIsDone(true);
+        if (currentTimerID + 1 === parsedTimerData.length) {
+            setIsWorkoutDone(true);
+            setTimerComplete(false);
+            setIsRunning(false);
+        } else {
+            setTimerComplete(false);
+            setCurrentTimerID(currentTimerID + 1);
+        }
     };
     const handleGoToEdit = () => {
         navigate('/add');
     };
+
     return (
-        <GlobalTimerData.Provider value={{ isRunning, currentTimerDone, setCurrentTimerDone }}>
+        <GlobalTimerData.Provider value={{ isRunning, timerComplete, setTimerComplete }}>
             <Timers>
-                <TextBtn onClick={handleGoToEdit} key={`editButton`} name={'Edit Workout'} />
-                <Timer>{isAtLeastOneTimer ? getTimer(0) : <h2>Add a timer!</h2>}</Timer>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    {parsedTimerData.map((timer: TimerData, index: number) =>
+                        parsedTimerData[0].type !== '' ? <TimerSnapshot key={`timerSnapshot${index}`} timer={timer} index={index} isWorkoutDone={isWorkoutDone} currentTimerID={currentTimerID} /> : '',
+                    )}
+                    <p>Total Workout Time: {getTotalTime()}</p>
+                </div>
+                <Timer>{isWorkoutDone ? <h1 className="clockStyle">DO:NE</h1> : isAtLeastOneTimer ? getTimer() : <h2>Add a timer!</h2>}</Timer>
                 <HomeBtns timeChange={timeChange} handleReset={handleReset} handleFF={handleFF} isRunning={isRunning} />
-                {/* <HomeBtnsWithBack timeChange={timeChange} handleReset={handleReset} handleBackBtn={handleBackBtn} handleFF={handleFF} isRunning={isRunning} /> */}
+                <TextBtn onClick={handleGoToEdit} key={`editButton`} name={'Edit Workout'} />
             </Timers>
         </GlobalTimerData.Provider>
     );

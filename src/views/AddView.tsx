@@ -143,7 +143,6 @@ const AddView = () => {
                     ),
                 )}
             </Timers>
-            <p>{JSON.stringify(timerData)}</p>
             <AddTimerContainer>
                 <TextBtn onClick={handleAddTimer} key={`Stopwatch`} name={'Stopwatch'} />
                 <TextBtn onClick={handleAddTimer} key={`Countdown`} name={'Countdown'} />

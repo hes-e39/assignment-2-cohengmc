@@ -8,18 +8,14 @@ interface TimerProps {
 
 const Countdown = ({ time }: TimerProps) => {
     const globalTimerData = useContext(GlobalTimerData);
-    const [seconds, setSeconds] = useState(0);
-
-    useEffect(() => {
-        setSeconds(time);
-    }, [time]);
+    const [seconds, setSeconds] = useState(time);
 
     useEffect(() => {
         let interval = null;
 
-        if (globalTimerData.isRunning && !globalTimerData.currentTimerDone) {
+        if (globalTimerData.isRunning && !globalTimerData.timerComplete) {
             if (seconds === 0) {
-                globalTimerData.setCurrentTimerDone(true);
+                globalTimerData.setTimerComplete(true);
             }
             interval = setTimeout(() => {
                 setSeconds(prevseconds => prevseconds - 1);

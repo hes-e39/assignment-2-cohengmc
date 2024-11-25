@@ -4,7 +4,7 @@
 }
 
 body {
-  margin: 0;
+  /* margin: 0; */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -15,6 +15,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+p {
+  margin: 0;
 }
 
 td,
@@ -166,4 +170,27 @@ th {
   position: absolute;
   left: 2%;
   top: 2%;
+}
+
+.notStarted {
+  background-color: red;
+}
+
+.complete {
+  background-color: lightgreen;
+}
+
+.active {
+  background-color: green;
+}
+
+.miniClock {
+  background-color: black;
+  color: red;
+  padding: .2em;
+  border-radius: 8px;
+}
+
+.activeText {
+  color: lightgreen
 }
