@@ -86,6 +86,7 @@ th {
 
 .btnLogo {
   width: 2rem;
+  user-select: none;
 }
 
 .btnContainer {
