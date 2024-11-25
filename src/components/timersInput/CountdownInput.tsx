@@ -23,7 +23,7 @@ const Countdown = ({ timerID }: TimerProps) => {
         if (target.innerText === 'Set') {
             if (userInputCleanup(timerInput) > 0) {
                 const currentTimerData = { type: 'Countdown', time: userInputCleanup(timerInput), rounds: 0, work: 0, rest: 0 };
-                // biome-ignore lint/style/useConst: <explanation>
+                // biome-ignore lint/style/useConst: <it does change>
                 let newTimerData = [...timerData.timerData];
                 newTimerData[timerID] = currentTimerData;
                 timerData.setTimerData(newTimerData);
@@ -37,14 +37,14 @@ const Countdown = ({ timerID }: TimerProps) => {
     const handleBackBtn = () => {
         setTimerInput('000000');
         const currentTimerData = { type: 'Countdown', time: 0, rounds: 0, work: 0, rest: 0 };
-        // biome-ignore lint/style/useConst: <explanation>
+        // biome-ignore lint/style/useConst: <it does change>
         let newTimerData = [...timerData.timerData];
         newTimerData[timerID] = currentTimerData;
         timerData.setTimerData(newTimerData);
     };
 
     const handleDeleteBtn = () => {
-        // biome-ignore lint/style/useConst: <explanation>
+        // biome-ignore lint/style/useConst: <it does change>
         let newTimerData = [...timerData.timerData];
         newTimerData.splice(timerID, 1);
         timerData.setTimerData(newTimerData);

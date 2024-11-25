@@ -33,7 +33,7 @@ const Tabata = ({ timerID }: TimerProps) => {
                     work: userInputCleanup(userData.roundWorkDurationInput),
                     rest: userInputCleanup(userData.roundRestDurationInput),
                 };
-                // biome-ignore lint/style/useConst: <explanation>
+                // biome-ignore lint/style/useConst: <it does change>
                 let newTimerData = [...timerData.timerData];
                 newTimerData[timerID] = currentTimerData;
                 timerData.setTimerData(newTimerData);
@@ -53,14 +53,14 @@ const Tabata = ({ timerID }: TimerProps) => {
     const handleBackBtn = () => {
         setUserData({ ...userData, roundAmountInput: '00', roundWorkDurationInput: '0000', roundRestDurationInput: '0000', userSelect: '' });
         const currentTimerData = { type: 'Tabata', time: 0, rounds: 0, work: 0, rest: 0 };
-        // biome-ignore lint/style/useConst: <explanation>
+        // biome-ignore lint/style/useConst: <it does change>
         let newTimerData = [...timerData.timerData];
         newTimerData[timerID] = currentTimerData;
         timerData.setTimerData(newTimerData);
     };
 
     const handleDeleteBtn = () => {
-        // biome-ignore lint/style/useConst: <explanation>
+        // biome-ignore lint/style/useConst: <it does change>
         let newTimerData = [...timerData.timerData];
         newTimerData.splice(timerID, 1);
         timerData.setTimerData(newTimerData);
