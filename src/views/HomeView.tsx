@@ -130,7 +130,7 @@ const TimersView = () => {
                 ) : isAtLeastOneTimer ? (
                     getTimer()
                 ) : (
-                    <h2>Add a timer!</h2>
+                    <h2 style={{ userSelect: 'none' }}>Add a timer!</h2>
                 )}
                 <HomeBtns timeChange={timeChange} handleReset={handleReset} handleFF={handleFF} isRunning={isRunning} />
                 <TextBtn onClick={handleGoToEdit} key={`editButton`} name={'Edit Workout'} />
