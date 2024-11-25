@@ -18,15 +18,7 @@ justify-content: center;
   gap: 1rem;
 `;
 
-// const Timer = styled.div`
-//   border: 1px solid gray;
-//   padding: 20px;
-//   margin: 10px;
-//   font-size: 1.5rem;
-// `;
-
 const AddTimerContainer = styled.div`
-  border: 1px solid gray;
   padding: 20px;
   margin: 10px;
   font-size: 1.5rem;
@@ -125,12 +117,13 @@ const AddView = () => {
         }
         if (timersSet === timerData.length) {
             navigate('/');
+        } else {
+            alert('Make sure all timers are set');
         }
     };
 
     return (
         <TimerDataContext.Provider value={{ timerData, setTimerData }}>
-            <TextBtn onClick={handleDone} key={`doneButton`} name={'Done'} />
             <Timers>
                 {timerData.map((timer, index) =>
                     timerData[0].type !== '' ? (
@@ -149,6 +142,9 @@ const AddView = () => {
                 <TextBtn onClick={handleAddTimer} key={`XY`} name={'XY'} />
                 <TextBtn onClick={handleAddTimer} key={`Tabata`} name={'Tabata'} />
             </AddTimerContainer>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <TextBtn onClick={handleDone} key={`doneButton`} name={'Done'} />
+            </div>
         </TimerDataContext.Provider>
     );
 };
