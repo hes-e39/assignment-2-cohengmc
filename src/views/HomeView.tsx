@@ -43,6 +43,9 @@ const TimersView = () => {
     const [hardReset, setHardReset] = useState(false);
 
     const cacheTimerData = localStorage.getItem('timerData');
+    if (cacheTimerData === null) {
+        localStorage.setItem('timerData', JSON.stringify([{ type: '', time: 0, rounds: 0, work: 0, rest: 0 }]));
+    }
     const parsedTimerData = cacheTimerData !== null && JSON.parse(cacheTimerData);
     const isAtLeastOneTimer = parsedTimerData[0].type !== '';
     const currentTimerData = parsedTimerData[currentTimerID];
